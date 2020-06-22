@@ -22,14 +22,14 @@ class GloRe_Unit(nn.Module):
     """
 
     def __init__(self, num_in, num_mid,
-                 ConvNd=nn.Conv2d,
-                 BatchNormNd=nn.BatchNorm2d,
+                 ConvNd=nn.Conv3d,
+                 BatchNormNd=nn.BatchNorm3d,
                  normalize=False):
         super(GloRe_Unit, self).__init__()
 
         self.normalize = normalize
         self.num_s = int(2 * num_mid)
-        self.num_n = int(16)
+        self.num_n = int(1 * num_mid)
 
         # reduce dim
         self.conv_state = ConvNd(num_in, self.num_s, kernel_size=1)
@@ -89,3 +89,31 @@ class GloRe_Unit(nn.Module):
         return out
 
 
+# class GloRe_Unit(nn.Module):
+#     def __init__(self, in_channels, mid_channels, N):
+#         super().__init__()
+#         self.in_channels = in_channels
+#         self.mid_channels = mid_channels
+#         self.N = N
+#
+#         self.phi = nn.Conv2d(in_channels, mid_channels, 1)
+#         self.theta = nn.Conv2d(in_channels, N, 1)
+#         self.gcn = GCN(N, mid_channels)
+#         self.phi_inv = nn.Conv2d(mid_channels, in_channels, 1)
+#
+#     def forward(self, x):
+#         batch_size, in_channels, h, w = x.shape
+#         mid_channels = self.mid_channels
+#         N = self.N
+#
+#         B = self.theta(x).view(batch_size, N, -1)
+#         x_reduced = self.phi(x).view(batch_size, mid_channels, h * w)
+#         x_reduced = x_reduced.permute(0, 2, 1)
+#         v = B.bmm(x_reduced)
+#
+#         z = self.gcn(v)
+#         y = B.permute(0, 2, 1).bmm(z).permute(0, 2, 1)
+#         y = y.view(batch_size, mid_channels, h, w)
+#         x_res = self.phi_inv(y)
+#
+#         return x + x_res

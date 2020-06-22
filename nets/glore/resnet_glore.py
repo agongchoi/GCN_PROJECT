@@ -1,7 +1,7 @@
 import torch
 from torchvision.models.resnet import ResNet, BasicBlock
 from torchvision.models.utils import load_state_dict_from_url
-from nets.glore.glore import GloRe
+from nets.glore.glore import GloRe_Unit
 
 model_urls = {
     'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
@@ -21,7 +21,7 @@ class ResNet_Glore(ResNet):
                  groups=1, width_per_group=64, replace_stride_with_dilation=None,
                  norm_layer=None)
 
-        #self.glore1 = GloRe(256, int(256), 16)
+        self.glore1 = GloRe_Unit(256, int(256))
         #self.glore2 = GloRe(256, int(256), 16)
 
     def forward(self, x):
@@ -33,7 +33,7 @@ class ResNet_Glore(ResNet):
         x = self.layer1(x)
         x = self.layer2(x)
         x = self.layer3(x)
-        #x = self.glore1(x)
+        x = self.glore1(x)
         x = self.layer4(x)
 
 

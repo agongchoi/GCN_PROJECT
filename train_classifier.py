@@ -16,7 +16,7 @@ import torchvision.transforms as transforms
 import torchvision.models as models
 import datasets
 import torchvision
-from nets.glore.glore import GloRe
+from nets.glore.glore import GloRe_Unit
 from nets.glore.resnet_glore import resnet18_glore
 
 from utils import Bar, Logger, AverageMeter, accuracy, mkdir_p, savefig
@@ -29,7 +29,7 @@ parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
                     help='number of data loading workers (default: 4)')
 
 # Optimization options
-parser.add_argument('--epochs', default=40, type=int, metavar='N',
+parser.add_argument('--epochs', default=10, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('--train-batch', default=32, type=int, metavar='N',
                     help='train batchsize')
